@@ -1,9 +1,34 @@
 import React from "react";
-import { Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
+import { Text, TouchableOpacity, View, TouchableWithoutFeedback, Share } from "react-native";
 import { ModalContainer, Container,Header, LinkArea, Title,LongURL, ShortLinkArea, ShortLinkUrl} from "./styles";
 import { Feather } from "@expo/vector-icons";
+import Clipboard from 'expo-clipboard';
 
 export default function ModalLink({onClose}) {
+
+  function copyLink(){
+    Clipboard.setString('https://seulink.com.br');
+    alert('Link copiado com sucesso: ');
+  }
+  async function handleShare(){
+    try {
+      const result = await Share.share({
+        message:`Link:https://seulink.com.br`
+      });
+      if(result === Share.sharedAction){
+        if(result.activetyType){
+          console.log('ActivityType');
+        }else{
+          console.log('Compartilhado com sucesso');
+        }
+      }else if (result.action === Share.dismissedAction){
+        console.log('Modal Fechado');
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   return (
     <ModalContainer>
       <TouchableWithoutFeedback onPress={onClose}>
@@ -15,7 +40,7 @@ export default function ModalLink({onClose}) {
           <TouchableOpacity>
             <Feather name="x" color="#212743" size={30} onPress={onClose} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleShare}>
             <Feather name="share" color="#212743" size={30} />
           </TouchableOpacity>
         </Header>
@@ -24,12 +49,13 @@ export default function ModalLink({onClose}) {
           <LongURL numberOfLines={1}>http://google.com</LongURL>
           <ShortLinkArea
             activeOpacity={1}
+            onPress = {copyLink}
           >
             <ShortLinkUrl
               numberOfLines={1}
             >http://google.com
             </ShortLinkUrl>
-            <TouchableOpacity>
+            <TouchableOpacity onPress = {copyLink}>
               <Feather
                 name= "copy"
                 color = "#FFF"
