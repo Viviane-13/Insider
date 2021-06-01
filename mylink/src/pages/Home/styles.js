@@ -55,6 +55,7 @@ export const Input = styled.TextInput`
   border-top-right-radius: 7px;
   border-bottom-right-radius: 7px;
   font-size: 17px;
+  color: #FFF;
 `;
 export const ButtonLink = styled.TouchableOpacity`
   align-items: center;
