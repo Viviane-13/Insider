@@ -25,7 +25,9 @@ import {
 } from "./styles";
 import { useState } from "react";
 
-import api from '../../services/api'
+import api from '../../services/api';
+
+import {saveLink} from '../../utils/storeLinks'
 
 export default function Home() {
 
@@ -43,6 +45,8 @@ export default function Home() {
       setData(response.data);
 
       setModalVisible(true);
+
+      saveLink('sujeitolinks',response.data);
 
       Keyboard.dismiss();
       setLoading(false);
